@@ -1,0 +1,30 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+  # Base VM OS configuration.
+  config.ssh.insert_key = false
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+  # General VirtualBox VM configuration.
+  config.vm.provider :virtualbox do |v|
+    v.memory = 8196
+    v.cpus = 2
+#    v.linked_clone = true
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--ioapic", "on"]
+  end
+
+# Gnome parrotos box.
+  # parrotos.
+  config.vm.define "parrotos" do |parrotos|
+    parrotos.vm.hostname = "parrotos.test"
+    parrotos.vm.network :private_network, ip: "192.168.2.6"
+    config.vm.box = "codeup/ParrotOS_Security"
+    config.vm.box_version = "1.0"
+    config.ssh.insert_key = false
+    parrotos.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--cpus", 2]
+      v.customize ["modifyvm", :id, "--vram", 128]
+      v.customize ["modifyvm", :id, "--accelerate3d", "on"]
+    end
+  end
+end
