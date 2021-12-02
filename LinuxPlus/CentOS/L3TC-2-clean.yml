@@ -1,0 +1,26 @@
+---
+- name: This cleans up Lesson 3 Topic C-2 lab
+  hosts: localhost
+  become: true
+  vars:
+    users:
+      - "MsFrizzle"
+      - "Liz"
+      - "Wanda"
+    mygroup: FrizzleClass
+    mydir: /SchoolBus
+  tasks:
+    - name: Removes the directory
+      file:
+        path: "{{ mydir }}"
+        state: absent
+    - name: Remove the group for the lab
+      group:
+        name: "{{ mygroup }}"
+        state: absent
+    - name: Remove the users for group
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{ users }}"

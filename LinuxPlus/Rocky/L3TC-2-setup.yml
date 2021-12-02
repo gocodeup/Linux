@@ -1,0 +1,25 @@
+---
+- name: This is the setup for Lesson 3 Topic C-2 lab
+  hosts: localhost
+  become: true
+  vars:
+    users:
+      - "MsFrizzle"
+      - "Liz"
+      - "Wanda"
+    mygroup: FrizzleClass
+    mydir: /SchoolBus
+  tasks:
+    - name: Creates the directory
+      file:
+        path: "{{ mydir }}"
+        state: directory
+    - name: Create the group for the lab
+      group:
+        name: "{{ mygroup }}"
+        state: present
+    - name: Create the users for group
+      user:
+        name: "{{ item }}"
+        groups: "{{ mygroup }}"
+      loop: "{{ users }}"

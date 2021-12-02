@@ -1,0 +1,31 @@
+---
+- name: This removes any new network configurations
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Copy the hosts file back over existing one
+      copy:
+        src: /root/.hosts
+        dest: /etc/hosts
+        remote_src: yes
+
+    - name: Remove networks
+      shell: rm -rf /etc/sysconfig/network-scripts/*
+
+    - name: Copy the backup network config over the existing one
+      copy:
+        src: /etc/sysconfig/.network/network-scripts
+        dest: /etc/sysconfig
+        remote_src: yes
+
+    - name: Remove backup network config
+      file:
+        path: /etc/sysconfig/.network
+        state: absent
+
+    - name: Set hostname back
+      hostname: 
+        name: centos.test
+
+    - name: Reload connection
+      shell: nmcli connection reload

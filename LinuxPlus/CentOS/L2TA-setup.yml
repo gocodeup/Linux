@@ -1,0 +1,22 @@
+---
+- name: This is the setup script for Lesson 2 Topic A lab
+  hosts: localhost
+  become: true
+  gather_facts: false
+  vars:
+    - user: Luigi
+  
+  tasks:
+    - name: Creates user for lab
+      user:
+        name: "{{ user }}"
+        password: "{{ 'powerup' | password_hash('sha512') }}"
+        
+    - name: This creates a copy of the sudoers file
+      ansible.builtin.copy:
+        src: /etc/sudoers
+        dest: /root/.sudoerscopy
+        remote_src: yes
+        validate: /usr/sbin/visudo -csf %s
+
+    

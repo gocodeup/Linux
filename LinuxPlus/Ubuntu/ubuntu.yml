@@ -1,0 +1,25 @@
+---
+- name: Configure ubuntu server
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Create user for lab activity
+      user:
+        name: student
+        state: present
+        password: "{{ 'Pa22w0rd' | password_hash('sha512') }}"
+
+    - name: Install all the software needed
+      apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - bash-completion       
+        - vim
+
+    - name: Enable ufw and allow port 22
+      ufw:
+        rule: allow
+        name: OpenSSH
+        state: enabled

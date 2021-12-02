@@ -1,0 +1,65 @@
+---
+- name: This setup copies the network configuration for backup
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Copy /etc/hosts file
+      copy:
+        src: /etc/hosts
+        dest: /root/.hosts
+        remote_src: yes
+
+    - name: copy network configuration      
+      copy:
+        src: /etc/sysconfig/network-scripts
+        dest: /etc/sysconfig/.network/
+        remote_src: yes
+
+    - name: Add items to file
+      blockinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-eth1
+        block: |
+          TYPE=Ethernet
+          PROXY_METHOD=none
+          BROWSER_ONLY=no
+          BOOTPROTO=none
+          IPADDR=192.168.1.30
+          PREFIX=24
+          GATEWAY=192.168.1.0
+          DEFROUTE=yes
+          IPV4_FAILURE_FATAL=no
+          IPV6INIT=yes
+          IPV6_AUTOCONF=yes
+          IPV6_DEFROUTE=yes
+          IPV6_FAILURE_FATAL=no
+          IPV6_ADDR_GEN_MODE=stable-privacy
+          NAME=ifcfg-eth1
+          UUID=d9b8d837-2616-491d-a5d7-2991470eb31c
+          DEVICE=eth1
+          ONBOOT=yes
+
+    - name: Take out block line
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-eth1
+        line: '# BEGIN ANSIBLE MANAGED BLOCK'
+        state: absent
+
+    - name: Take out block line
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-eth1
+        line: '# END ANSIBLE MANAGED BLOCK'
+        state: absent
+
+    - name: Create a bashscript to run in the background 
+      copy:
+        content: |
+                #!/bin/bash
+                sleep 8
+                nmcli con reload
+        dest: /tmp/reload.sh
+        mode: '0777'
+    - name: Reload  
+      shell: /tmp/reload.sh
+      async: 4
+      poll: 1
+      ignore_errors: yes

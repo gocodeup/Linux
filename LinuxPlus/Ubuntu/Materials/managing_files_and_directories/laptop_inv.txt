@@ -1,0 +1,14 @@
+User       Make    Serial No.
+
+jsmith     Asus    S489124
+mstephens  Asus    S737481
+sarmstrong Dell    1923843
+tramirez   Acer    2942349
+jcook      Dell    1489284
+hroberts   Lenovo  8989090
+rburton    Lenovo  8139003
+nporter    Asus    S892849
+kriley     Dell    1390390
+manderson  Acer    2988481
+lbarnes    Asus    S393892
+tlee	   Lenovo  8112091

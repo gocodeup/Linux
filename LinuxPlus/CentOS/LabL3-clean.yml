@@ -1,0 +1,53 @@
+---
+- name: This cleans up the Lesson 3 Knowledge check lab
+  hosts: localhost
+  become: true
+  vars:
+    users:
+      - "Rufus"
+      - "Scarlet"
+      - "Palmer"
+    mygroup: Shinra
+    myfile: /Mako.txt
+  tasks:
+    - name: Removes the file for lab
+      file:
+        path: "{{ myfile }}"
+        state: absent
+    - name: Removes the group for lab
+      group:
+        name: "{{ mygroup }}"
+        state: absent
+    - name: Removes the users for lab
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{ users }}"
+
+    - name: Remove direcory created
+      file:
+        path: /PowerCompany
+        state: absent
+
+    - name: Copy /etc/profile file
+      ansible.builtin.copy:
+        dest: /etc/profile
+        src: /.profilecopy
+        remote_src: yes
+
+    - name: Copy /etc/bashrc file
+      ansible.builtin.copy:
+        dest: /etc/bashrc
+        src: /.bashcopyrc
+        remote_src: yes
+
+    - name: Remove files
+      file:
+        path: /.profilecopy
+        state: absent
+
+    - name: Remove files
+      file:
+        path: /.bashcopyrc
+        state: absent

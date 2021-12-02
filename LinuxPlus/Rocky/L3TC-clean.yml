@@ -1,0 +1,89 @@
+---
+- name: This cleans up Lesson 3 Topic C lab
+  hosts: localhost
+  become: true
+  vars:
+    users:
+      - "Lion"
+      - "Tiger"
+      - "Bear"
+      - "Susan"  
+    mygroup: Keepers
+
+  tasks:
+    - name: Remove group
+      group:
+        name: "{{ mygroup }}"
+        state: absent
+    - name: Remove users for the lab
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{ users }}"
+
+    - name: Copy /etc/profile file
+      ansible.builtin.copy:
+        dest: /etc/profile
+        src: /.profilecopy
+        remote_src: yes
+
+    - name: Copy /etc/bashrc file
+      ansible.builtin.copy:
+        dest: /etc/bashrc
+        src: /.bashcopyrc
+        remote_src: yes
+
+    - name: Copy /home/vagrant/.bashrc file
+      ansible.builtin.copy:
+        dest: /home/vagrant/.bashrc
+        src: /.vagrantbashcopy
+        remote_src: yes
+
+    - name: Copy /home/vagrant/.bash_profile file
+      ansible.builtin.copy:
+        dest: /home/vagrant/.bash_profile
+        src: /.vagrantprofilecopy
+        remote_src: yes
+
+    - name: Copy /root/.bashrc file
+      ansible.builtin.copy:
+        dest: /root/.bashrc
+        src: /.rootbashcopy
+        remote_src: yes
+
+    - name: Copy /root/.bash_profile file
+      ansible.builtin.copy:
+        dest: /root/.bash_profile
+        src: /.rootprofilecopy
+        remote_src: yes
+
+    - name: Remove files
+      file:
+        path: /.profilecopy
+        state: absent
+
+    - name: Remove files
+      file:
+        path: /.bashcopyrc
+        state: absent
+
+    - name: Remove files
+      file:
+        path: /.vagrantbashcopy
+        state: absent
+        
+    - name: Remove files
+      file:
+        path: /.vagrantprofilecopy
+        state: absent
+
+    - name: Remove files
+      file:
+        path: /.rootbashcopy
+        state: absent
+
+    - name: Remove files
+      file:
+        path: /.rootprofilecopy
+        state: absent

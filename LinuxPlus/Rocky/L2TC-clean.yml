@@ -1,0 +1,28 @@
+---
+- name: This is the cleanup script for Lesson 2 Topic C lab
+  hosts: localhost
+  become: true
+  gather_facts: false
+  vars:
+    users:
+      - "Tony"
+      - "Tim"
+      - "Manu"
+  
+  tasks:
+    - name: Remove the users for lab
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{ users }}"
+
+    - name: Remove any groups with uid range of 1011-5999
+      shell: while IFS=":" read -r group x gid x; do if [[ $gid -gt 1010 ]]; then [[ $gid -lt 6000 ]] && groupdel -f "$group"; fi done </etc/group
+      args:
+        executable: /bin/bash
+
+    - name: Remove group with uid of 210
+      shell: while IFS=":" read -r group x gid x; do [[ $gid -eq 210 ]] && groupdel -f "$group"; done </etc/group
+      args:
+        executable: /bin/bash

@@ -1,0 +1,17 @@
+Name                   Version        Installed?    Configured?
+
+Apache-HTTP-Server      2.4.35            Y              N
+MySQL                   8.0.12            N              N
+Eclipse                 4.9               N              Y
+openVAS                 9.0               N              N
+LibreOffice             6.1.0             Y              Y
+OpenVAS                 7.0               N              N
+Apache-HTTP-Server      2.4.35            Y              N
+Snort                   2.9.11            N              N
+Friefox                 62.0.3            Y              Y
+Thunderbird             52.0.1            Y              N
+LibreOffice             6.1.0             Y              Y
+Python                  3.7.0             N              N
+Git                     2.19.0            Y              N
+Friefox                 55.0.1            Y              Y
+

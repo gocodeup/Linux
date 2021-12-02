@@ -1,0 +1,51 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+disk1 = './disk-0-1.vdi'
+disk2 = './disk-0-2.vdi'
+disk3 = './disk-0-3.vdi'
+Vagrant.configure("2") do |config|
+  # Base VM OS configuration.
+  config.ssh.insert_key = false
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+  # General VirtualBox VM configuration.
+  config.vm.provider :virtualbox do |v|
+    v.memory = 1024
+    v.cpus = 1
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--ioapic", "on"]
+  end
+
+# Rocky 8 Gnome box.
+  # rocky.
+  config.vm.define "rocky" do |rocky|
+    rocky.vm.hostname = "rocky.test"
+    rocky.vm.network :private_network, ip: "192.168.2.5"
+	  rocky.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: [".git/", "disk-0-1.vdi", "disk-0-2.vdi", "disk-0-3.vdi"]
+    rocky.vm.provision "shell",
+      inline: "sudo cp /vagrant/ansible.cfg /etc/ansible/ansible.cfg"
+    rocky.vm.provision "shell",
+      inline: "sudo cp /vagrant/inventory /etc/ansible/inventory"
+    rocky.vm.provision "shell",
+      inline: "chmod +x /vagrant/provision.sh"
+    rocky.vm.provision "shell",
+      inline: "bash /vagrant/provision.sh"
+    config.vm.box = "codeup/Rocky"
+    config.ssh.insert_key = false
+    rocky.vm.provision "shell",
+      inline: "sudo cp -r /vagrant/Materials /home/vagrant/Materials"
+    rocky.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--memory", 8192]
+      v.customize ["modifyvm", :id, "--cpus", 2]
+      v.customize ["modifyvm", :id, "--vram", 128]
+      v.customize ["modifyvm", :id, "--accelerate3d", "on"]
+      unless File.exist?(disk1)
+        v.customize ['createhd', '--filename', disk1, '--variant', 'Fixed', '--size', 2 * 1024]
+        v.customize ['createhd', '--filename', disk2, '--variant', 'Fixed', '--size', 5 * 1024]
+        v.customize ['createhd', '--filename', disk3, '--variant', 'Fixed', '--size', 1 * 1024]
+        v.customize ['storageattach', :id,  '--storagectl', 'SATA', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', disk1]
+        v.customize ['storageattach', :id,  '--storagectl', 'SATA', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', disk2]
+        v.customize ['storageattach', :id,  '--storagectl', 'SATA', '--port', 4, '--device', 0, '--type', 'hdd', '--medium', disk3]
+      end
+    end
+  end
+end

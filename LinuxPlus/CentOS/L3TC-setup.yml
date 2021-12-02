@@ -1,0 +1,63 @@
+---
+- name: This is the setup for Lesson 3 Topic C lab
+  hosts: localhost
+  become: true
+  vars:
+    users:
+      - "Lion"
+      - "Tiger"
+      - "Bear"
+    mygroup: Keepers
+    user1: "Susan"
+
+  tasks:
+    - name: Ensure group exists
+      group:
+        name: "{{ mygroup }}"
+        state: present
+
+    - name: Creates group and users for the lab
+      user:
+        name: "{{ item }}"
+        groups: "{{ mygroup }}"
+      loop: "{{ users }}"
+
+    - name: Create other user
+      user:
+        name: "{{ user1 }}"
+
+    - name: Copy /etc/profile file
+      ansible.builtin.copy:
+        src: /etc/profile
+        dest: /.profilecopy
+        remote_src: yes
+
+    - name: Copy /etc/bashrc file
+      ansible.builtin.copy:
+        src: /etc/bashrc
+        dest: /.bashcopyrc
+        remote_src: yes
+
+    - name: Copy /home/vagrant/.bashrc file
+      ansible.builtin.copy:
+        src: /home/vagrant/.bashrc
+        dest: /.vagrantbashcopy
+        remote_src: yes
+
+    - name: Copy /home/vagrant/.bash_profile file
+      ansible.builtin.copy:
+        src: /home/vagrant/.bash_profile
+        dest: /.vagrantprofilecopy
+        remote_src: yes
+
+    - name: Copy /root/.bashrc file
+      ansible.builtin.copy:
+        src: /root/.bashrc
+        dest: /.rootbashcopy
+        remote_src: yes
+
+    - name: Copy /root/.bash_profile file
+      ansible.builtin.copy:
+        src: /root/.bash_profile
+        dest: /.rootprofilecopy
+        remote_src: yes

@@ -1,0 +1,49 @@
+---
+- name: This is the setup for Lesson 3 Knowledge check lab
+  hosts: localhost
+  become: true
+  vars:
+    users:
+      - "Rufus"
+      - "Scarlet"
+      - "Palmer"
+    mygroup: Shinra
+    myfile: /Mako.txt
+  tasks:
+    - name: Creates the file for lab
+      file:
+        path: "{{ myfile }}"
+        state: touch
+    - name: Creates the directory for lab
+      file:
+        path: /PowerCompany
+        state: directory
+    - name: Creates files for lab
+      file:
+        path: "/PowerCompany/{{ item }}"
+        state: touch
+      with_items:
+        - Invoice1
+        - Invoice2
+        - Invoice3
+    - name: Creates the group for lab
+      group:
+        name: "{{ mygroup }}"
+        state: present
+    - name: Creates the users for lab
+      user:
+        name: "{{ item }}"
+        groups: "{{ mygroup }}"
+      loop: "{{ users }}"
+
+    - name: Copy /etc/profile file
+      ansible.builtin.copy:
+        src: /etc/profile
+        dest: /.profilecopy
+        remote_src: yes
+
+    - name: Copy /etc/bashrc file
+      ansible.builtin.copy:
+        src: /etc/bashrc
+        dest: /.bashcopyrc
+        remote_src: yes

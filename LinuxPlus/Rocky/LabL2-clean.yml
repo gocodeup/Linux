@@ -1,0 +1,42 @@
+---
+- name: This cleans up the Lesson 2 Knowledge check lab
+  hosts: localhost
+  become: true
+  tasks:
+    - name: This removes any users created
+      shell: while IFS=":" read -r user x uid x; do if [[ $uid -gt 1006 ]]; then [[ $uid -lt 6000 ]] && userdel -rf "$user"; fi done </etc/passwd
+      args:
+        executable: /bin/bash
+
+    - name: This removes any groups created
+      shell: while IFS=":" read -r group x gid x; do if [[ $gid -gt 1010 ]]; then [[ $gid -lt 6000 ]] && groupdel -f "$group"; fi done </etc/group
+      args:
+        executable: /bin/bash
+
+    - name: Copy a new "sudoers" file into place, after passing validation with visudo
+      ansible.builtin.copy:
+        src: /root/.sudoerscopy
+        dest: /etc/sudoers
+        remote_src: yes
+        validate: /usr/sbin/visudo -csf %s
+
+    - name: Remove copied file
+      file:
+        path: /root/.sudoerscopy
+        state: absent
+
+    - name: Remove any files created in /etc/sudoers.d
+      shell: rm -rf /etc/sudoers.d/*
+      args:
+        executable: /bin/bash
+
+    - name: Copy a new login.defs file into place
+      ansible.builtin.copy:
+        src: /root/.logincopy
+        dest: /etc/login.defs
+        remote_src: yes
+
+    - name: Remove copied file
+      file:
+        path: /root/.logincopy
+        state: absent

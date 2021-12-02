@@ -1,0 +1,29 @@
+---
+- name: This sets up Lesson 4 Topic A-2 lab
+  hosts: localhost
+  become: true
+  tasks:
+    - name: This creates partitions needed for lab
+      parted:
+        device: /dev/sdd
+        number: 1
+        label: gpt
+        state: present
+        part_end: 101MiB
+        name: GPT
+
+    - name: This creates partitions needed for lab
+      parted:
+        device: /dev/sdd
+        number: 2
+        label: gpt
+        state: present
+        part_start: 101MiB
+        part_end: 221MiB
+        name: GPT
+
+    - name: make a copy of fstab file
+      copy: 
+        src: /etc/fstab
+        dest: /root/.fstabcopy
+        remote_src: yes

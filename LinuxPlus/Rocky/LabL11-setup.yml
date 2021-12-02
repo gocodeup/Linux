@@ -1,0 +1,32 @@
+---
+- name: This setup copies the network configuration for backup
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Remove packages
+      yum:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - kmod-kvdo
+        - vdo
+   
+    - name: Install Cups package
+      yum:
+        name: cups
+        state: present
+
+    - name: Remove container-tools
+      shell: yum module remove container-tools -y
+      
+    - name: Reset container-tools
+      shell: yum module reset container-tools -y
+
+    - name: copy repos     
+      copy:
+        src: /etc/yum.repos.d
+        dest: /root/.repos
+        remote_src: yes
+
+    - name: Remove repos 
+      shell: rm -rf /etc/yum.repos.d/*

@@ -1,0 +1,24 @@
+---
+- name: This cleans up Lesson 5 lab 
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Remove Employeeinfo file
+      file:
+        path: "/var/log/Employeeinfo"
+        state: absent
+
+    - name: Remove /root/DraftReport.txt file
+      file:
+        path: "/root/DraftReport.txt"
+        state: absent
+
+    - name: Remove /root/RoughDraft.txt file
+      file:
+        path: /root/RoughDraft.txt
+        state: absent
+
+    - name: Remove /root/FinalReport.txt file
+      file:
+        path: /root/FinalReport.txt
+        state: absent

@@ -1,0 +1,20 @@
+---
+- name: This cleans up Lesson 7 lab
+  hosts: localhost
+  become: true
+  ignore_errors: yes
+  tasks:
+    - name: Copy a new 40_custom file into place
+      copy:
+        src: /root/.40custom
+        dest: /etc/grub.d/40_custom
+        remote_src: yes
+
+    - name: Remove copied file
+      file:
+        path: /root/.40custom
+        state: absent
+
+    - name: Run grub2-mkconfig command
+      shell:
+        cmd: sudo grub2-mkconfig -o /boot/grub2/grub.cfg

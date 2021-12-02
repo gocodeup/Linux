@@ -1,0 +1,47 @@
+---
+- name: This sets up Lesson 4 Topic A lab
+  hosts: localhost
+  become: true
+  tasks:
+    - name: make a copy of fstab file
+      copy: 
+        src: /etc/fstab
+        dest: /root/.fstabcopy
+        remote_src: yes
+
+    - name: Parted 1 partition
+      parted:
+        device: /dev/sdd
+        number: 1
+        part_end: 287MiB
+        state: present
+        part_type: primary
+
+    - name: Partprobe
+      command: partprobe
+
+    - name: Create VG MU
+      lvg:
+        vg: MU
+        pvs: /dev/sdd1
+        pesize: 8M
+
+    - name: Create LV OozmaKappa
+      lvol:
+        lv: OozmaKappa
+        size: 280M
+        state: present
+        vg: MU
+
+    - name: Make the LV have xfs
+      filesystem:
+        dev: /dev/MU/OozmaKappa
+        fstype: ext4
+
+    - name: Mount the VG
+      mount:
+        path: /BestTeam
+        src: /dev/MU/OozmaKappa
+        state: mounted
+        fstype: ext4
+
