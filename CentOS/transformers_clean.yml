@@ -1,0 +1,31 @@
+---
+- name: Undo Transformers lab
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: remove users from lab activity
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop:
+        - Megatron
+        - StarScream
+        - Barricade
+        - Optimus
+        - BumbleBee
+        - Mirage
+        - JetFire
+        - Grimlock
+
+    - name: Delete directories
+      command: "rm -rf /Omega_one /Trypticon"
+
+    - name: remove groups
+      group:
+        name: "{{ item }}" 
+        state: absent
+      loop:
+        - Autobot
+        - Decepticon

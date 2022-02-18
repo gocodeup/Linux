@@ -1,0 +1,22 @@
+Rule: GR-01 Organizational Policies and Guidelines
+
+1. Ensure that you start your work and leave the office premises as per the
+   scheduled working hours.
+2. Employes are requested to be in business attire during weekdays.
+3. Employee code of conduct has to be strictly adhered to.
+4. Smoking or having food within the office space is prohibited.
+
+Rule: IN-01 Rules Relating to Internet Usage
+
+1. Internet access has been provided to users strictly for educational
+  purposes. Any misuse of the same will be strictly dealt with.
+2. Browsing, checking email, and chatting are strictly prohibited during office
+  hours.
+3. Employes are prohibited from viewing inappropriate and/or malicious sites.
+4. Downloading games, pictures, and other applications from the web is prohibited.
+
+Rule: PW-01 Rules Relating to Setting of Passwords
+
+1. Ensure that the passwords you specify are alphanumeric and have at least
+  one special character each.
+2. Ensure passwords are at least eight characters long.

@@ -1,0 +1,16 @@
+---
+- name: This cleans up Lesson 2 Topic B lab
+  hosts: localhost
+  become: true
+  vars:
+    users:
+      - "Moe"
+      - "Larry"
+      - "Curly"
+  tasks:
+    - name: Removes the users for lab
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{ users }}"

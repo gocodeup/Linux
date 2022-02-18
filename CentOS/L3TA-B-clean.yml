@@ -1,0 +1,29 @@
+---
+- name: This is the cleanup for Lesson 3 Topic A-B lab
+  hosts: localhost
+  become: true
+  vars:
+    users:
+      - "Kim"
+      - "Ron"
+      - "Rufus"
+      - "Wade"
+      - "Shego"  
+    mygroup: TeamPossible
+
+  tasks:
+    - name: Remove group
+      group:
+        name: "{{ mygroup }}"
+        state: absent
+    - name: Remove users for the lab
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{ users }}"
+
+    - name: Remove the directory /Master_Plans
+      file:
+        path: /Master_Plans
+        state: absent

@@ -1,0 +1,53 @@
+---
+- name: This cleans up Lesson 4 Topic B lab
+  hosts: localhost
+  become: true
+  ignore_errors: yes
+  tasks:
+    - name: unmount VG
+      mount:
+        path: /Field
+        state: absent
+
+    - name: Remove the logical volume Soccer
+      lvol:
+        vg: Sports
+        lv: Soccer
+        state: absent
+        force: yes
+
+    - name: Remove a volume group with name Sports
+      lvg:
+        vg: Sports
+        state: absent
+
+    - name: Remove signature from sdd1
+      shell: 
+        cmd: wipefs -a /dev/sdd1
+
+    - name: Remove signature from sdd2
+      shell: 
+        cmd: wipefs -a /dev/sdd2
+
+    - name: read sdd info
+      parted: device=/dev/sdd unit=MiB
+      register: sdd_info
+
+    - name: This deletes all partitions on sdd
+      parted:
+        device: /dev/sdd
+        number: "{{ item.num }}"
+        state: absent
+      with_items:
+       - "{{ sdd_info.partitions }}"
+
+    - name: Copy a new fstab file into place
+      copy:
+        src: /root/.fstabcopy
+        dest: /etc/fstab
+        remote_src: yes
+
+    - name: Remove copied file
+      file:
+        path: /root/.fstabcopy
+        state: absent

@@ -1,0 +1,42 @@
+---
+- name: This sets up Lesson 5 lab 
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Create a file
+      file:
+        path: "/var/log/Employeeinfo"
+        state: touch
+
+    - name: Add items to file
+      blockinfile:
+        path: /var/log/Employeeinfo
+        block: |
+          Tim Martinez 
+          root
+          root
+          root
+          Cathy Hill
+          root
+          Cerina Luna
+          Matthew Bowen
+          Raven Garcia
+          root
+          root
+          root
+          root
+          Patricia Sanchez
+          root
+          Martin Garcia 
+
+    - name: Take out block line
+      lineinfile:
+        path: /var/log/Employeeinfo
+        line: '# BEGIN ANSIBLE MANAGED BLOCK'
+        state: absent
+
+    - name: Take out block line
+      lineinfile:
+        path: /var/log/Employeeinfo
+        line: '# END ANSIBLE MANAGED BLOCK'
+        state: absent

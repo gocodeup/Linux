@@ -1,0 +1,15 @@
+---
+- name: This setup 
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Configure sshd service
+      service:
+        name: sshd
+        state: started
+        enabled: yes  
+    - name: Configure chronyd service
+      service:
+        name: chronyd
+        state: started
+        enabled: yes     

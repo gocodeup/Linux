@@ -1,0 +1,23 @@
+---
+- name: This is the setup script for Lesson 2 Topic C lab
+  hosts: localhost
+  become: true
+  gather_facts: false
+  vars:
+    users:
+      - "Tim"
+      - "Tony"
+      - "Manu"
+  
+  tasks:
+    - name: Create the users for lab
+      user:
+        name: "{{ item }}"
+      loop: "{{ users }}"
+
+    - name: This creates a copy of the sudoers file
+      ansible.builtin.copy:
+        src: /etc/sudoers
+        dest: /root/.sudoerscopy
+        remote_src: yes
+        validate: /usr/sbin/visudo -csf %s

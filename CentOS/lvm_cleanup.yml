@@ -1,0 +1,35 @@
+---
+- name: Remove LVM partitions VG and LVS from centos server
+  hosts: localhost
+  become: yes
+
+  tasks:
+
+    - name: Remove partition for LVM
+      parted:
+        device: /dev/sdb
+        number: 1
+        state: absent
+
+    - name: Run partprobe to remove partition from table
+      command: sudo partprobe
+
+    - name: Remove "backup" VolGroup
+      lvg:
+        vg: backup
+        pvs: /dev/sdb1
+        pesize: "8"
+        state: absent
+        force: yes
+
+    - name: Create Logical Volumes
+      lvol:
+        vg: backup
+        lv: "{{ item }}"
+        size: "512"
+        state: absent
+        force: yes
+      loop:
+        - sysbk
+        - databk
+        - logbk

@@ -1,0 +1,10 @@
+---
+- name: This sets up Lab 14
+  hosts: localhost
+  become: true
+  tasks:
+    - name: copy spool cron
+      copy:
+        src: /var/spool/cron
+        dest: /root/.spool/
+        remote_src: yes

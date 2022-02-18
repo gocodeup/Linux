@@ -1,0 +1,87 @@
+---
+- name: This sets up Lesson 4 Topic B-2 lab
+  hosts: localhost
+  become: true
+  tasks:
+    - name: make a copy of fstab file
+      copy: 
+        src: /etc/fstab
+        dest: /root/.fstabcopy
+        remote_src: yes
+
+    - name: Parted 1 partition
+      parted:
+        device: /dev/sdd
+        number: 1
+        part_end: 287MiB
+        state: present
+        part_type: primary
+
+    - name: Parted 2 partition
+      parted:
+        device: /dev/sdd
+        number: 2
+        part_start: 287MiB
+        part_end: 551MiB
+        state: present
+        part_type: primary
+
+    - name: Partprobe
+      command: partprobe
+
+    - name: Create VG Mad
+      lvg:
+        vg: Mad
+        pvs: /dev/sdd1
+        pesize: 8M
+
+    - name: Create LV Hatter
+      lvol:
+        lv: Hatter
+        size: 280M
+        state: present
+        vg: Mad
+
+    - name: Make the LV have xfs
+      filesystem:
+        dev: /dev/Mad/Hatter
+        fstype: xfs
+
+    - name: Mount the VG
+      mount:
+        path: /Futterwack
+        src: /dev/Mad/Hatter
+        state: mounted
+        fstype: xfs
+
+    - name: Create VG White
+      lvg:
+        vg: White
+        pvs: /dev/sdd2
+        pesize: 8M
+
+    - name: Create LV Rabbit
+      lvol:
+        lv: Rabbit
+        size: 256M
+        state: present
+        vg: White
+
+    - name: Make the LV have ext4
+      filesystem:
+        dev: /dev/White/Rabbit
+        fstype: ext4
+
+    - name: Mount the VG
+      mount:
+        path: /Time
+        src: /dev/White/Rabbit
+        state: mounted
+        fstype: ext4
+
+    - name: make a copy of motd file
+      copy: 
+        src: /etc/motd
+        dest: /root/.motd
+        remote_src: yes
+

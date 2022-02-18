@@ -1,0 +1,27 @@
+---
+- name: This is the setup for Lesson 3 Topic A-B lab
+  hosts: localhost
+  become: true
+  vars:
+    users:
+      - "Kim"
+      - "Ron"
+      - "Rufus"
+      - "Wade"
+    mygroup: TeamPossible
+    user1: "Shego"
+
+  tasks:
+    - name: Ensure group exists
+      group:
+        name: "{{ mygroup }}"
+        state: present
+    - name: Creates group and users for the lab
+      user:
+        name: "{{ item }}"
+        groups: "{{ mygroup }}"
+      loop: "{{ users }}"
+    - name: Create user Shego
+      user:
+        name: "{{ user1 }}"
+

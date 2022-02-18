@@ -1,0 +1,1 @@
+{"dependencies":[["vagrant-guest_ansible",["= 0.0.4"]],["log4r",[">= 0"]],["concurrent-ruby",["~> 1.0"]],["i18n",[">= 0"]],["micromachine",[">= 2","< 4"]],["vagrant-vbguest",["= 0.30.0"]],["vagrant-vboxmanage",["= 0.0.2"]]],"checksum":"fe1014c8c86d74aeb488957c63fd335c686ee15e258c1bf85b3d32d5a7ac5cc8","vagrant_version":"2.2.16"}

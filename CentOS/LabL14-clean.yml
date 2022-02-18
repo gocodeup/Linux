@@ -1,0 +1,26 @@
+---
+- name: This cleans up Lesson 14 Lab
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Remove crontabs
+      shell: rm -rf /var/spool/cron/*
+
+    - name: Copy the crontab directory over the existing one
+      copy:
+        src: /root/.spool/cron
+        dest: /var/spool
+        remote_src: yes
+
+    - name: Remove backup crontab file
+      file:
+        path: /root/.spool
+        state: absent
+
+    - name: Clear at que
+      shell: atrm $(atq | cut -f1)
+
+    - name: Remove the KrustyKrab file created
+      file:
+        path: /home/vagrant/KrustyKrab
+        state: absent
