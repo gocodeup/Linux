@@ -1,2 +1,3 @@
 *.vagrant
 *.disk-0*
+CentOS/disk-0-*.vdi
