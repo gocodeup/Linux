@@ -1,7 +1,7 @@
 # Linux
 # Environment
 
-This is an environment build using Ansible, Vagrant, and VirtualBox to create an environment suitable for study and practice for the Linux+ Certification exam. In order to make use of this environment, some software will need to be installed on your computer. The computer you use for this should have at least 16Gb of RAM and a CPU that has at least 2 cores. You may be able to get away with a little less, however for the optimum experience it is recommended. This can be setup on hosts with a variety of operating systems.
+This is an environment build using Ansible, Vagrant, and VirtualBox to create an environment suitable for study and practice for Linux. In order to make use of this environment, some software will need to be installed on your computer. The computer you use for this should have at least 16Gb of RAM and a CPU that has at least 2 cores. You may be able to get away with a little less, however for the optimum experience it is recommended. This can be setup on hosts with a variety of operating systems.
 # Environment Build Instructions
 ## macOS
 _Gatekeeper will block virtualbox from installing. All you have to do is go into Security & Privacy of System Preferences and click Allow under the General tab and rerun installation._
