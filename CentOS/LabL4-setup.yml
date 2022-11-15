@@ -15,8 +15,8 @@
         enabled: no
         state: stopped
 
-    - name: make a copy of fstab file
-      copy:
-        src: /etc/fstab
-        dest: /root/.fstabcopy
-        remote_src: yes
+   #- name: make a copy of fstab file
+   #   copy:
+   #     src: /etc/fstab
+   #     dest: /root/.fstabcopy
+   #     remote_src: yes
