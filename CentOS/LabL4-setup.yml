@@ -1,5 +1,5 @@
 ---
-- name: This sets up Lesson 8 lab 
+- name: This sets up Lesson 4 lab 
   hosts: localhost
   become: true
   tasks:
