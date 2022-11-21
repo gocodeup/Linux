@@ -1,0 +1,10 @@
+---
+- name: This sets up Lesson 6 Topic A Lab
+  hosts: localhost
+  become: true
+  tasks:
+    - name: copy rsyslog.d
+      copy:
+        src: /etc/rsyslog.d
+        dest: /root/.rsyslog
+        remote_src: yes
