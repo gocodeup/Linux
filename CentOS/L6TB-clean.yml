@@ -1,0 +1,20 @@
+---
+- name: This cleans up Lab 12
+  hosts: localhost
+  become: true
+  tasks:
+    - name: copy journal config file
+      copy:
+        src: /etc/systemd/journald.conf
+        dest: /etc/systemd/journald.conf
+        remote_src: yes
+
+    - name: Remove copied file
+      file:
+        path: /root/.journal
+        state: absent
+
+    - name: Remove recentlogs file
+      file:
+        path: /home/vagrant/recentlogs.txt
+        state: absent
