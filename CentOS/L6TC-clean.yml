@@ -19,3 +19,6 @@
       file:
         path: /root/.chronycopy
         state: absent
+    - name: Set timezone to America/Chicago
+      timezone:
+        name: America/Chicago
