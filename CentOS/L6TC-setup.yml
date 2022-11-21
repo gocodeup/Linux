@@ -1,0 +1,16 @@
+---
+- name: This sets up Lesson 6 Topic C lab 
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Disable and stop chronyd
+      service: 
+        name: chronyd
+        enabled: no
+        state: stopped
+
+    - name: make a copy of chrony file
+      copy:
+        src: /etc/chrony.conf
+        dest: /root/.chronycopy
+        remote_src: yes
