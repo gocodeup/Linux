@@ -1,0 +1,21 @@
+---
+- name: This cleans up Lesson 8 lab 
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Enable and start chronyd service
+      service:
+        name: chronyd
+        enabled: yes
+        state: started
+
+    - name: Copy a new chrony file into place
+      copy:
+        src: /root/.chronycopy
+        dest: /etc/chrony.conf
+        remote_src: yes
+
+    - name: Remove copied file
+      file:
+        path: /root/.chronycopy
+        state: absent
