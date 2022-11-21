@@ -1,0 +1,23 @@
+---
+- name: This cleans up Lesson 6 Topic A Lab
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Remove all files in rsyslog directory
+      shell: rm -rf /etc/rsyslog.d/*
+
+    - name: copy rsyslog.d back into place
+      copy:
+        src: /root/.rsyslog/rsyslog.d
+        dest: /etc
+        remote_src: yes
+
+    - name: Remove copied file
+      file:
+        path: /root/.rsyslog
+        state: absent
+
+    - name: Remove messages-debug file
+      file:
+        path: /var/log/messages-debug
+        state: absent
