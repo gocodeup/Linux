@@ -1,0 +1,8 @@
+---
+- name: This cleans up Lesson 7 Topic A Lab
+  become: true
+  tasks:
+    - name: Remove Packages directory
+      file:
+        path: /Packages
+        state: absent
