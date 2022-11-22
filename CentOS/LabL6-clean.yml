@@ -1,0 +1,30 @@
+---
+- name: This cleans up Lesson 6 lab 
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Remove copied file
+      file:
+        path: /root/.chronycopy
+        state: absent
+    - name: Set timezone to America/Chicago
+      timezone:
+        name: America/Chicago
+    - name: Remove all files in rsyslog directory
+      shell: rm -rf /etc/rsyslog.d/*
+
+    - name: copy rsyslog.d back into place
+      copy:
+        src: /root/.rsyslog/rsyslog.d
+        dest: /etc
+        remote_src: yes
+
+    - name: Remove copied file
+      file:
+        path: /root/.rsyslog
+        state: absent
+
+    - name: Remove auth-errors file
+      file:
+        path: /var/log/auth-errors
+        state: absent
