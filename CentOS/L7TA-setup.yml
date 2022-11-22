@@ -1,0 +1,13 @@
+---
+- name: This sets up Lesson 7 Topic A Lab
+  become: true
+  tasks:
+    - name: Create Packages directory
+      file:
+        path: /Packages
+        state: directory
+        mode: '0777'
+    - name: Download software packages
+      get_url:
+        url: http://mirror.centos.org/centos/7/os/x86_64/Packages/ksh-20120801-142.el7.x86_64.rpm
+        dest: /Packages/ksh-20120801-142.el7.x86_64.rpm
