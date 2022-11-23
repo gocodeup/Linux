@@ -1,0 +1,21 @@
+---
+- name: This cleans up Lesson 7 Topic D Lab
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Remove samba tarball
+      file:
+        path: /home/vagrant/samba-latest.tar.gz
+        state: absent
+    - name: remove samba extracted file
+      file:
+        path: /home/vagrant/samba-4.17.3
+        state: absent
+    - name: remove etc tarball
+      file:
+        path: /tmp/etc.tar.gz
+        state: absent
+    - name: remove backuptest directory
+      file:
+        path: /backuptest
+        state: absent
