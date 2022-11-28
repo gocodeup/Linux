@@ -1,0 +1,35 @@
+---
+- name: This sets up Lesson 8 Topic B Lab
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Install httpd package
+      yum:
+        name: httpd
+        state: present
+        
+    - name: copy httpd config file
+      copy:
+        src: /etc/httpd/conf/httpd.conf
+        dest: /root/.httpd
+        remote_src: yes
+
+    - firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+
+    - firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: enabled
+
+    - firewalld:
+        service: http
+        permanent: no
+        state: enabled
+
+    - firewalld:
+        port: 80/tcp
+        permanent: no
+        state: enabled
