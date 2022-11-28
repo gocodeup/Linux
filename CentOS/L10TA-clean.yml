@@ -1,5 +1,5 @@
 ---
-- name: This cleans up Lesson 14 Lab
+- name: This cleans up Lesson 10 Topic A Lab
   hosts: localhost
   become: yes
   tasks:
