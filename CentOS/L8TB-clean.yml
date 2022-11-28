@@ -1,0 +1,65 @@
+---
+- name: This cleans up Lesson 8 Topic B Lab
+  hosts: localhost
+  become: true
+  tasks:
+    - name: copy httpd config file
+      copy:
+        src: /root/.httpd
+        dest: /etc/httpd/conf/httpd.conf
+        remote_src: yes
+
+    - name: Remove copied file
+      file:
+        path: /root/.httpd
+        state: absent
+
+    - name: Remove custom directory
+      file:
+        path: /custom
+        state: absent
+
+    - name: Remove httpd package
+      yum:
+        name: httpd
+        state: absent
+
+    - firewalld:
+        service: https
+        permanent: yes
+        state: disabled
+
+    - firewalld:
+        port: 443/tcp
+        permanent: yes
+        state: disabled
+
+    - firewalld:
+        service: http
+        permanent: yes
+        state: disabled
+
+    - firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: disabled
+
+    - firewalld:
+        service: https
+        permanent: no
+        state: disabled
+
+    - firewalld:
+        port: 443/tcp
+        permanent: no
+        state: disabled
+
+    - firewalld:
+        service: http
+        permanent: no
+        state: disabled
+
+    - firewalld:
+        port: 80/tcp
+        permanent: no
+        state: disabled
