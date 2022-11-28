@@ -1,0 +1,53 @@
+---
+- name: This cleans up Lesson 8 Topic A Lab
+  hosts: localhost
+  become: true
+  tasks:
+
+    - name: Remove httpd package
+      yum:
+        name: httpd
+        state: absent
+
+    - firewalld:
+        service: https
+        permanent: yes
+        state: disabled
+
+    - firewalld:
+        port: 443/tcp
+        permanent: yes
+        state: disabled
+
+    - firewalld:
+        service: http
+        permanent: yes
+        state: disabled
+
+    - firewalld:
+        port: 80/tcp
+        permanent: yes
+        state: disabled
+
+    - firewalld:
+        service: https
+        permanent: no
+        state: disabled
+
+    - firewalld:
+        port: 443/tcp
+        permanent: no
+        state: disabled
+
+    - firewalld:
+        service: http
+        permanent: no
+        state: disabled
+
+    - firewalld:
+        port: 80/tcp
+        permanent: no
+        state: disabled
+
+    - name: Remove www directory
+      shell: rm -rf /var/www
